@@ -52,14 +52,17 @@ int main() {
     }
     assert(i == total_length_with_terminators);
 
+    // To use the plain bitvector uncomment the following line
+    //    sdsl::select_support_mcl<1> select(&bv);
+
+    // To use Elias Fano uncomment the following two lines
     sdsl::sd_vector<> ef(bv);
-    sdsl::select_support_sd<1> select(&ef);  //  sdsl::sd_vector<>::select_1_type select(&ef);
-//    sdsl::select_support_mcl<1> select(&bv);
+    sdsl::select_support_sd<1> select(&ef);  // == sdsl::sd_vector<>::select_1_type select(&ef);
 
     std::cout << "num strings \t" << num_strings << std::endl
               << "total length\t" << total_length_with_terminators << std::endl
               << "raw data takes\t" << TO_MiB(total_length_with_terminators * sizeof(char)) << " MiB" << std::endl
-              << "bitvector takes\t" << sdsl::size_in_mega_bytes(ef) << " MiB" << std::endl
+              << "bitvector takes\t" << sdsl::size_in_mega_bytes(ef) << " MiB" << std::endl // To use Elias-Fano pass ef instead of bv
               << "select takes\t" << sdsl::size_in_mega_bytes(select) << " MiB" << std::endl
               << "(pointers alone would've taken " << TO_MiB(num_strings * sizeof(char *)) << " MiB)" << std::endl;
 
